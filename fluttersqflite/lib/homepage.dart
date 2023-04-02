@@ -33,11 +33,12 @@ class _HomePageState extends State<HomePage> {
 
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descritptionController = TextEditingController();
-  
 
   _updateItem(int id) async {
-    await SQLHelper.updateItem(id, _titleController.text, _descritptionController.text);
+    await SQLHelper.updateItem(
+        id, _titleController.text, _descritptionController.text);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,7 +58,7 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () => _showForm(_journals[index]['id']),
                   icon: Icon(Icons.edit),
                 ),
-                IconButton(onPressed: () => null, icon: Icon(Icons.delete))
+                IconButton(onPressed: () => _deleteItem(_journals[index]['id']), icon: Icon(Icons.delete))
               ]),
             ),
           ),
@@ -131,4 +132,11 @@ class _HomePageState extends State<HomePage> {
     print("...number of items ${_journals.length}");
   }
 
+  void _deleteItem(int id) async {
+    await SQLHelper.deleteItem(id);
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text("Successfully deleted a journal!"),
+    ));
+    _refreshJournals();
+  }
 }
