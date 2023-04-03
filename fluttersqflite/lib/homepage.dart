@@ -37,6 +37,7 @@ class _HomePageState extends State<HomePage> {
   _updateItem(int id) async {
     await SQLHelper.updateItem(
         id, _titleController.text, _descritptionController.text);
+    _refreshJournals();
   }
 
   @override
@@ -58,7 +59,9 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () => _showForm(_journals[index]['id']),
                   icon: Icon(Icons.edit),
                 ),
-                IconButton(onPressed: () => _deleteItem(_journals[index]['id']), icon: Icon(Icons.delete))
+                IconButton(
+                    onPressed: () => _deleteItem(_journals[index]['id']),
+                    icon: Icon(Icons.delete))
               ]),
             ),
           ),
