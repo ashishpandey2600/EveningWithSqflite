@@ -10,33 +10,27 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<Map<String, dynamic>> listofmap = [];
-  bool _isLoading = true;
 
   TextEditingController descriptionController = TextEditingController();
 
   void refreahListofmap() async {
     final data = await SQLHelper.getItems();
-
     setState(() {
       listofmap = data;
-      _isLoading = false;
     });
     print("function refreashListofmap $listofmap.length");
   }
 
-  bool check(index) {
-    return listofmap[index]['isdone'] == 1 ? true : false;
-  }
 
-  //addint items in SQL database
-  Future<void> _addItem(int isdone) async {
+  //adding items in SQL database
+  Future<void> _addItem(int  isdone) async {
     await SQLHelper.createItem(isdone, descriptionController.text);
     refreahListofmap();
     descriptionController.text = '';
   }
 
-  Future<void> updateItem(id, int isdone) async {
-    await SQLHelper.updateItem(id, isdone, descriptionController.text);
+  Future<void> UpdateItem(int id, int isdone, String destext) async {
+    await SQLHelper.updateItem(id, isdone, destext);
     refreahListofmap();
   }
 
@@ -68,14 +62,17 @@ class _HomePageState extends State<HomePage> {
                   child: ListView.builder(
                     itemCount: listofmap.length,
                     itemBuilder: (context, index) => Container(
-                      margin: EdgeInsets.only(bottom: 20),
+                      margin: const EdgeInsets.only(bottom: 20),
                       child: ListTile(
                         onTap: () {
-                          
-                            listofmap[index]['isdone'] == 0
-                              ? updateItem(listofmap[index]['isdone'], 1)
-                              : updateItem(listofmap[index]['isdone'], 0);
-                         
+                          print(listofmap[index]['isdone']);
+
+                          // UpdateItem(listofmap[index]['isdone'], 1);
+                          listofmap[index]['isdone'] == 0
+                              ? UpdateItem(listofmap[index]['isdone'], 1,
+                                  listofmap[index]['description'])
+                              : UpdateItem(listofmap[index]['isdone'], 0,
+                                  listofmap[index]['description']);
                         },
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20)),
@@ -83,7 +80,7 @@ class _HomePageState extends State<HomePage> {
                             EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                         tileColor: Colors.white,
                         leading: Icon(
-                          check(index)
+                          (listofmap[index]['isdone']==1 ?true : false)
                               ? Icons.check_box
                               : Icons.check_box_outline_blank,
                           color: Colors.blue,
@@ -93,13 +90,13 @@ class _HomePageState extends State<HomePage> {
                           style: TextStyle(
                               fontSize: 16,
                               color: Colors.black,
-                              decoration: check(index)
+                              decoration: (listofmap[index]['isdone']==1 ?true : false)
                                   ? TextDecoration.lineThrough
                                   : null),
                         ),
                         trailing: Container(
-                          padding: EdgeInsets.all(0),
-                          margin: EdgeInsets.symmetric(vertical: 12),
+                          padding: const EdgeInsets.all(0),
+                          margin: const EdgeInsets.symmetric(vertical: 12),
                           height: 35,
                           width: 35,
                           decoration: BoxDecoration(

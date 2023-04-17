@@ -7,7 +7,7 @@ class SQLHelper {
 CREATE TABLE items(
   id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
   description TEXT,
-  isdone INTEGER,
+  isdone BOOLEAN,
   createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 )
 
@@ -48,7 +48,7 @@ CREATE TABLE items(
       'description': description,
       'createdAt': DateTime.now().toString()
     };
-
+    print("update called");
     final result =
         await db.update('items', data, where: "id = ?", whereArgs: [id]);
     return result;
