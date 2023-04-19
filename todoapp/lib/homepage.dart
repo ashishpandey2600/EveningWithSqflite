@@ -69,9 +69,9 @@ class _HomePageState extends State<HomePage> {
 
                           // UpdateItem(listofmap[index]['isdone'], 1);
                           listofmap[index]['isdone'] == 0
-                              ? UpdateItem(listofmap[index]['isdone'], 1,
+                              ? UpdateItem(listofmap[index]['id'], 1,
                                   listofmap[index]['description'])
-                              : UpdateItem(listofmap[index]['isdone'], 0,
+                              : UpdateItem(listofmap[index]['id'], 0,
                                   listofmap[index]['description']);
                         },
                         shape: RoundedRectangleBorder(

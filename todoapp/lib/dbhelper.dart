@@ -42,16 +42,19 @@ CREATE TABLE items(
 
   static Future<int> updateItem(int id, int isdone, String description) async {
     final db = await SQLHelper.db();
+    int count = await db
+        .rawUpdate('UPDATE items SET isdone = ? WHERE id = ?', [isdone, id]);
+    print('updated1: $id');
 
-    final data = {
-      'isdone': isdone,
-      'description': description,
-      'createdAt': DateTime.now().toString()
-    };
+    // final data = {
+    //   'isdone': isdone,
+    //   'description': description,
+    //   'createdAt': DateTime.now().toString()
+    // };
     print("update called");
-    final result =
-        await db.update('items', data, where: "id = ?", whereArgs: [id]);
-    return result;
+    // final result =
+    //     await db.update('items', data, where: "id = ?", whereArgs: [id]);
+    return count;
   }
 
   static Future<void> deleteItem(int id) async {
